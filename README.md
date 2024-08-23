@@ -29,7 +29,7 @@ CodeLlama is capable of generating complicated embeddings representing code bloc
 Fine-tuning on such a dataset would be expensive if we try to use CodeLlama for the entire process, not to mention it's a bit nonsensical. Given that, we can instead use a smaller model that we train from scratch based on the pragma values and CodeLlama embeddings. Basic structure is outlined in the image below:
 
 <p align="center">
-   <img src="imgs/codellama_for_qor.png" width="500">
+   <img src="imgs/codellama_for_qor_bolded.png" width="500">
 </p>
 
 #### Joint Embedding with CodeLlama and GNN + Classifying Bidirectional Decoder
