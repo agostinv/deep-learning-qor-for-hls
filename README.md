@@ -26,7 +26,11 @@ Based on the work of one of the labs sponsoring this competition at UCLA, found 
 #### CodeLlama Embeddings + Classifying Bidirectional Decoder
 CodeLlama is capable of generating complicated embeddings representing code blocks. While those embeddings are meant for next-token prediction for foundational decoder models, it can almost certainly be adapted similarly to the embeddings ripped from bidirectional language models like [CodeBert](https://arxiv.org/abs/2002.08155). The only issue here is that Vitis HLS pragmas are almost certainly foreign to CodeLlama, but that can be dealt with via fine-tuning (combined with QLoRA, we can probably use the 70B model so long as we FSDP). 
 
-Fine-tuning on such a dataset would be expensive if we try to use CodeLlama for the entire process, not to mention it's a bit nonsensical. Given that, we can instead use a smaller model that we train from scratch based on the pragma values and CodeLlama embeddings.
+Fine-tuning on such a dataset would be expensive if we try to use CodeLlama for the entire process, not to mention it's a bit nonsensical. Given that, we can instead use a smaller model that we train from scratch based on the pragma values and CodeLlama embeddings. Basic structure is outlined in the image below:
+
+<p align="center">
+   <img src="imgs/codellama_for_qor.png" width="500">
+</p>
 
 #### Joint Embedding with CodeLlama and GNN + Classifying Bidirectional Decoder
 
