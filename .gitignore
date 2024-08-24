@@ -1,2 +1,4 @@
-train_data
+train_data/
+sample_submission.csv
+test.csv
 machine-learning-contest-for-high-level-synthesis.zip
