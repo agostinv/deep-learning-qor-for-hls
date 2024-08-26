@@ -6,8 +6,13 @@ from peft import prepare_model_for_kbit_training, LoraConfig, get_peft_model
 
 from models.bidir_decoder import BidirectionalTransformerDecoder
 
+'''
+    Jointly fine-tune the CodeLlama model for HLS pragmas alongside training the final "bdirectional decoder"
+    to actually engage in QoR. Loss propagates based on the final output. 
+'''
+
 class QoREstimator(pl.LightningModule):
-    def __init__(self, pragma_dim, d_model=768, nhead=8, num_layers=3, lora_r=8, lora_alpha=32, lora_dropout=0.1, compute_dtype=torch.bfloat16):
+    def __init__(self, model_name="codellama/CodeLlama-7b-hf", d_model=768, nhead=8, num_layers=3, lora_r=8, lora_alpha=32, lora_dropout=0.1, compute_dtype=torch.bfloat16):
         super().__init__()
         
         # Configure 4-bit quantization
