@@ -58,4 +58,3 @@ if __name__ == '__main__':
     print(f"Model loaded. Starting training...")
     trainer = Trainer(max_epochs=10)
     trainer.fit(embedder, train_loader)
-
