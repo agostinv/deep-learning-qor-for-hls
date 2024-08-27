@@ -30,27 +30,48 @@ class Design:
     self.perf = design['perf']
     self.res_util = design['res_util']
 
+def load_dataset(path_to_data: str):
+  all_graphs = {}
+  all_src_codes = {}
+  train_designs = []
+  for version in ['v18', 'v20', 'v21']:
+    design_path = os.path.join(path_to_data, i"data", "designs", f"{version}")
+    for fname in os.listdir(design_path):
+      if 'json' not in fname:
+        continue
+      with open(os.path.join(design_path, fname), 'r') as f:
+        design_points = json.load(f)
+        kernel_name = fname.split('.')[0]
+        if kernel_name == 'stencil':
+          kernel_name = 'stencil_stencil2d'
+        for key, points in design_points.items():
+          data = Design(kernel_name, version, points, all_graphs, all_src_codes)
+          train_designs.append(data)
+  return train_designs
+
+
 if __name__ == '__main__':
-    all_graphs = {}
-    all_src_codes = {}
-    train_designs = []
-    for version in ['v18', 'v20', 'v21']:
-      design_path = os.path.join("train_data", "data", "designs", f"{version}")
-      for fname in os.listdir(design_path):
-	if 'json' not in fname:
-	  continue
-	with open(os.path.join(design_path, fname), 'r') as f:
-	  design_points = json.load(f)
-	kernel_name = fname.split('.')[0]
-	if kernel_name == 'stencil':
-	  kernel_name = 'stencil_stencil2d'
-	for key, points in design_points.items():
-	  data = Design(kernel_name, version, points)
-	  train_designs.append(data)
-    print(len(train_designs))
-    print(train_designs[0].src_code)
-    print(train_designs[0].graph)
-    print(train_designs[0].design)
-    print(train_designs[0].valid)
-    print(train_designs[0].perf)
-    print(train_designs[0].res_util)
+  all_graphs = {}
+  all_src_codes = {}
+  train_designs = []
+  for version in ['v18', 'v20', 'v21']:
+    design_path = os.path.join("train_data", "data", "designs", f"{version}")
+    for fname in os.listdir(design_path):
+      if 'json' not in fname:
+        continue
+      with open(os.path.join(design_path, fname), 'r') as f:
+        design_points = json.load(f)
+        kernel_name = fname.split('.')[0]
+        if kernel_name == 'stencil':
+          kernel_name = 'stencil_stencil2d'
+        for key, points in design_points.items():
+          data = Design(kernel_name, version, points)
+          train_designs.append(data)
+      
+  print(len(train_designs))
+  print(train_designs[0].src_code)
+  print(train_designs[0].graph)
+  print(train_designs[0].design)
+  print(train_designs[0].valid)
+  print(train_designs[0].perf)
+  print(train_designs[0].res_util)

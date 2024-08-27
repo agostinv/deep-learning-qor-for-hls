@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
     when it comes to HLS pragmas. Goal is to port over the embeddings as a dataset for the final classifier. 
 '''
 
-class CodeLlamaQoREstimator(pl.LightningModule):
+class CodeLlamaEmbedder(pl.LightningModule):
     def __init__(self, model_name="codellama/CodeLlama-7b-hf", lora_r=8, lora_alpha=32, lora_dropout=0.1, compute_dtype=torch.bfloat16):
         super().__init__()
         
@@ -49,20 +49,17 @@ class CodeLlamaQoREstimator(pl.LightningModule):
         outputs = self.model(input_ids=input_ids, attention_mask=attention_mask, output_hidden_states=True)
         return outputs
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, batch):
         input_ids = batch["input_ids"]
         labels = batch["input_ids"]
         
         outputs = self(input_ids)
         
         # Custom loss function
-        validity_loss = nn.BCEWithLogitsLoss()(outputs[:, 0], labels[:, 0])
-        performance_loss = nn.MSELoss()(outputs[:, 1], labels[:, 1])
-        utilization_loss = nn.MSELoss()(outputs[:, 2:], labels[:, 2:])
+        unsupervised_loss = nn.MSELoss()(outputs, labels)
         
-        total_loss = validity_loss + performance_loss + utilization_loss
-        self.log('train_loss', total_loss)
-        return total_loss
+        self.log('train_loss', unsupervised_loss)
+        return unsupervised_loss
 
     def configure_optimizers(self):
         return torch.optim.AdamW(self.parameters(), lr=2e-5)
