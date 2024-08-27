@@ -9,12 +9,13 @@ from argparse import ArgumentParser, Namespace
 
 
 def add_args(parser: ArgumentParser) -> ArgumentParser:
-    parser.add_argument("--data_path", type=str, default="train_data")
-    parser.add_argument("--model_name", type=str, default="codellama/CodeLlama-7b-hf")
-    parser.add_argument("--lora_r", type=int, default=8)
-    parser.add_argument("--lora_alpha", type=int, default=32)
-    parser.add_argument("--lora_dropout", type=float, default=0.1)
-    parser.add_argument("--compute_dtype", type=str, default="torch.bfloat16")
+    parser.add_argument("--data-path", type=str, required=True)
+    parser.add_argument("--model-name", type=str, default="codellama/CodeLlama-7b-hf")
+    parser.add_argument("--lora-r", type=int, default=8)
+    parser.add_argument("--lora-alpha", type=int, default=32)
+    parser.add_argument("--lora-dropout", type=float, default=0.1)
+    parser.add_argument("--compute-dtype", type=str, default="bfloat16")
+    parser.add_argument("--output-path", type=str, default="test-output")
     return parser
 
 # convert designs points into dataset with just source code
@@ -45,6 +46,7 @@ if __name__ == '__main__':
 
     train_designs = load_dataset(args.data_path)
     train_loader = create_dataloader(train_designs)
+    compute_dtype = getattr(torch, args.compute_dtype)
 
     print(f"Loading model of name: {args.model_name} and compute_dtypei: {args.compute_dtype}")
     embedder = CodeLlamaEmbedder(
@@ -52,9 +54,9 @@ if __name__ == '__main__':
         lora_r=args.lora_r,
         lora_alpha=args.lora_alpha,
         lora_dropout=args.lora_dropout,
-        compute_dtype=args.compute_dtype
+        compute_dtype=compute_dtype
     )
 
     print(f"Model loaded. Starting training...")
-    trainer = Trainer(max_epochs=10)
+    trainer = Trainer(max_epochs=10, default_root_dir=args.output_path)
     trainer.fit(embedder, train_loader)
