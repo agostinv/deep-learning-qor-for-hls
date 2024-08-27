@@ -1,4 +1,8 @@
+__pycache__/
+.cache/
 train_data/
 sample_submission.csv
 test.csv
 machine-learning-contest-for-high-level-synthesis.zip
+checkpoints/
+test-scripts/
