@@ -63,8 +63,6 @@ class CodeLlamaEmbedder(pl.LightningModule):
         return outputs
 
     def training_step(self, batch, batch_idx):
-        print(len(batch))
-
         # may break for FSDP, but fine for DDP while quantization isn't working for FSDP
         encoding = self.tokenizer(batch, return_tensors='pt', padding=True)
         input_ids = encoding["input_ids"].to(device=self.model.device)
