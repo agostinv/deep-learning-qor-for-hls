@@ -7,13 +7,17 @@ https://www.kaggle.com/competitions/machine-learning-contest-for-high-level-synt
 
 Setting up for this repository should be relatively simple. Python >=3.12 is recommended. As an example for Bash when at the top of this repository:
 
-```
+```bash
 python3 -m venv new-venv
 source new-venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The dataset must be downloaded separately. It's available on the [Kaggle competition page](https://www.kaggle.com/competitions/machine-learning-contest-for-high-level-synthesis/overview) and potentially on the [HLSyn repository](https://github.com/UCLA-DM/HLSyn).
+The dataset must be downloaded separately. It's available on the [Kaggle competition page](https://www.kaggle.com/competitions/machine-learning-contest-for-high-level-synthesis/overview) and potentially on the [HLSyn repository](https://github.com/UCLA-DM/HLSyn). Alternatively, you can run the following to grab a zipped version:
+
+```bash
+wget https://web.engr.oregonstate.edu/~agostinv/machine-learning-contest-for-high-level-synthesis.zip
+```
 
 ## Project Description: QoR Estimations via Regression
 
