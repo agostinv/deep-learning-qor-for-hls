@@ -35,6 +35,32 @@ The first phase of the competition asks for 6-feature regressions focused on Qua
 | Utilization of FF | Proportion of utilization over time as a `float from 0 to 1`.  |
 
 
+### Dataset Layout
+
+The dataset provided by HLSyn is about only 40 kernels, but is expanded out across the design space of those kernels. Individual data points resemble the following:
+
+```
+ "__PIPE__L1-NA.__PIPE__L2-NA.__TILE__L2-1": {
+            "perf": 6832.0,
+            "point": {
+                  "__PIPE__L1": "",
+                  "__PIPE__L2": "",
+                  "__TILE__L2": 1
+            },
+            "res_util": {
+                  "util-BRAM": 0.0,
+                  "util-DSP": 0.0,
+                  "util-LUT": 0.08,
+                  "util-FF": 0,
+                  "total-BRAM": 0.0,
+                  "total-DSP": 0.0,
+                  "total-LUT": 105187.0,
+                  "total-FF": 0
+            },
+            "valid": true
+      }
+```
+
 ### Initial Approach Ideas
 
 Based on the work of one of the labs sponsoring this competition at UCLA, found [here](https://proceedings.neurips.cc/paper_files/paper/2023/file/8dfc3a2720a4112243a285b98e0d4415-Paper-Datasets_and_Benchmarks.pdf), a few ideas initially emerge. They're detailed below from easiest to implement to hardest to implement. 
