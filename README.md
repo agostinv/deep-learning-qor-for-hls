@@ -65,7 +65,7 @@ The dataset provided by HLSyn is about only 40 kernels, but is expanded out acro
 
 Based on the work of one of the labs sponsoring this competition at UCLA, found [here](https://proceedings.neurips.cc/paper_files/paper/2023/file/8dfc3a2720a4112243a285b98e0d4415-Paper-Datasets_and_Benchmarks.pdf), a few ideas initially emerge. They're detailed below from easiest to implement to hardest to implement. 
 
-#### CodeLlama Embeddings + Classifying Bidirectional Decoder
+#### CodeLlama Embeddings + Encoder w/ Cross-Attention
 CodeLlama is capable of generating complicated embeddings representing code blocks. While those embeddings are meant for next-token prediction for foundational decoder models, it can almost certainly be adapted similarly to the embeddings ripped from bidirectional language models like [CodeBert](https://arxiv.org/abs/2002.08155). The only issue here is that Vitis HLS pragmas are almost certainly foreign to CodeLlama, but that can be dealt with via fine-tuning (combined with QLoRA, we can probably use the 70B model so long as we FSDP). 
 
 Fine-tuning on such a dataset would be expensive if we try to use CodeLlama for the entire process, not to mention it's a bit nonsensical. Given that, we can instead use a smaller model that we train from scratch based on the pragma values and CodeLlama embeddings. Basic structure is outlined in the image below:
@@ -74,10 +74,10 @@ Fine-tuning on such a dataset would be expensive if we try to use CodeLlama for 
    <img src="imgs/codellama_for_qor_bolded.png" width="500">
 </p>
 
-#### Joint Embedding with CodeLlama and GNN + Classifying Bidirectional Decoder
+#### Joint Embedding with CodeLlama and GNN + Classifying Encoder w/ Cross-Attention
 
 The above idea, but adding a GNN embedding as well after feeding in the AST. Some T5-like code-focused model might work. 
 
-#### Pre-trained from Scratch GraphCodeBERT + Classifying Bidirectional Decoder
+#### Pre-trained from Scratch GraphCodeBERT + Classifying Encoder w/ Cross-Attention
 
 Easily the most expensive idea, this would replace the CodeLlama element of above ideas and the GNN portion of a joint embedding with a [GraphCodeBERT](https://arxiv.org/abs/2009.08366) only pretrained on C and then fine-tuned on the Vitis HLS annotated C. Has to be pretrained from scratch, as GraphCodeBERT doesn't support C out-of-the-box. 
